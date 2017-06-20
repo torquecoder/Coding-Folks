@@ -20,10 +20,14 @@
     </div>
 
     <script src="/javascript/src/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/javascript");
+
+        var socket = io();
     </script>
 </body>
 
