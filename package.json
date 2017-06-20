@@ -1,0 +1,19 @@
+{
+  "name": "coding-folks",
+  "version": "1.0.0",
+  "description": "A text editor that allows real time code collaboration Edit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torquecoder/Coding-Folks.git"
+  },
+  "author": "Shubham Singhal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/torquecoder/Coding-Folks/issues"
+  },
+  "homepage": "https://github.com/torquecoder/Coding-Folks#readme"
+}
