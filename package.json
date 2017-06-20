@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/torquecoder/Coding-Folks/issues"
   },
-  "homepage": "https://github.com/torquecoder/Coding-Folks#readme"
+  "homepage": "https://github.com/torquecoder/Coding-Folks#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
 }
