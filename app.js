@@ -14,10 +14,7 @@ var server = app.listen(port, function() {
 });
 
 // Connection with rethinkdb
-r.connect({
-    host: 'localhost',
-    port: 28015
-}, function(err, conn) {
+r.connect({ host: 'localhost', port: 28015}, function(err, conn) {
     if (err)
         throw err;
     r.db('test').tableList().run(conn, function(err, response) {
@@ -31,42 +28,38 @@ r.connect({
             r.db('test').tableCreate('edit').run(conn);
         }
     });
-});
 
-// Socket.io listener
-var io = require('socket.io')(server);
-io.on('connection', function(client) {
-    console.log('a user connected');
-    client.on('disconnect', function() {
-        console.log('a user disconnected');
-    });
-
-    socket.on('document-update', function(msg) {
-        console.log(msg);
-        r.table('edit').insert({
-            id: msg.id,
-            value: msg.value,
-            user: msg.user
-        }, {
-            conflict: "update"
-        }).run(conn, function(err, res) {
-            if (err)
-                throw err;
+    // Socket.io listener
+    var io = require('socket.io')(server);
+    io.on('connection', function(client) {
+        console.log('a user connected');
+        client.on('disconnect', function() {
+            console.log('a user disconnected');
         });
-    });
 
-    r.table('edit').changes().run(conn, function(err, cursor) {
-        if (err) throw err;
-        cursor.each(function(err, row) {
+        client.on('document-update', function(msg) {
+            console.log(msg);
+            r.table('edit').insert({
+                id: msg.id,
+                value: msg.value,
+                user: msg.user
+            }, {
+                conflict: "update"
+            }).run(conn, function(err, res) {
+                if (err)
+                    throw err;
+            });
+        });
+
+        r.table('edit').changes().run(conn, function(err, cursor) {
             if (err) throw err;
-            io.emit('doc', row);
+            cursor.each(function(err, row) {
+                if (err) throw err;
+                io.emit('doc', row);
+            });
         });
     });
-
 });
-
-
-
 
 app.get('/', function(req, res) {
     res.sendFile(app.get('views') + '/index.html');
