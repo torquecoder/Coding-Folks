@@ -23,12 +23,11 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
-
         function getParameterByName(name, url) {
             if (!url) url = window.location.href;
             name = name.replace(/[\[\]]/g, "\\$&");
             var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
+                results = regex.exec(url);
             if (!results) return null;
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, " "));
@@ -51,10 +50,17 @@
                 user: user,
                 value: editor.getValue()
             }
-            console.log(msg);
             socket.emit('document-update', msg);
         });
 
+        socket.on('doc', function(msg) {
+            if (msg.new_val.id === room && msg.new_val.user != user) {
+                var current_pos = editor.selection.getCursor();
+                editor.setValue(msg.new_val.value);
+                editor.moveCursorToPosition(current_pos);
+            }
+        });
+        
     </script>
 </body>
 
